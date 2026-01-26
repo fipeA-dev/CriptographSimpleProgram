@@ -2,9 +2,9 @@ package op;
 import java.awt.Dimension;
 import java.util.Scanner;
 import op.cripto;
-import op.csar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
@@ -109,18 +109,20 @@ public class Op {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         String msg = campoMsg.getText();
-                        Resp.setText(cripto.car(msg));
+                        try {
+                            Resp.setText(cripto.car(msg));
+                        } catch (IOException ex) {
+                            System.getLogger(Op.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                        }
                         Resp.setBounds(10, 10, 400, 400);
                         Resp.setLineWrap(true);
-                        janela2.add(Resp);
-                        janela2.setVisible(true);
+                        
                         campoMsg.setText("");
                   
                         janela.revalidate();
                         janela.repaint();
-                        janela2.revalidate();
-                        janela2.repaint();
-            
+                       
+                        
                  }
             
                 });
@@ -175,11 +177,12 @@ public class Op {
                         janela2.setVisible(true);
                         
                         campoMsg.setText("");
-                  
+                        
                         janela.revalidate();
                         janela.repaint();
                         janela2.revalidate();
                         janela2.repaint();
+                        
             
                  }
             

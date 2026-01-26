@@ -1,10 +1,13 @@
 package op;
-
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.math.BigInteger;
-
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 /**
  * Criptografia XOR + HEX + Cifra de César para hexadecimal
  * Funciona com qualquer string, retorna HEX + key + shift
@@ -26,8 +29,9 @@ public class cripto {
      * Criptografa uma mensagem
      * @param msg texto puro
      * @return String formatada: HEX + \n chave Base64 + \n shift
+     * @throws java.lang.Exception
      */
-    public static String car(String msg) {
+    public static String car(String msg) throws IOException {
         byte[] dados = msg.getBytes(StandardCharsets.UTF_8);
         SecureRandom random = new SecureRandom();
 
@@ -62,8 +66,23 @@ public class cripto {
 
         // chave Base64
         String keyBase64 = Base64.getEncoder().encodeToString(key);
-
-        return new String(chars) + "\n" + keyBase64 + "\n" + shift;
+        
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+        
+        
+        
+        String caminhoArquivo="keys_"+LocalDateTime.now().format(formatter)+".txt";
+        String caminhoArquivo1="mensage_"+LocalDateTime.now().format(formatter)+".txt";
+        
+        FileWriter f = new FileWriter(caminhoArquivo);
+        FileWriter f1 = new FileWriter(caminhoArquivo1);
+        BufferedWriter bf = new BufferedWriter(f);
+        BufferedWriter bf1 = new BufferedWriter(f1);
+        bf.write(keyBase64+"   \n:| \n |: \n   "+shift);
+        bf1.write(chars);
+        bf1.close();
+        bf.close();    
+        return new String(chars);
     }
 
     /**
